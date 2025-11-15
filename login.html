@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SafeGuard Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f6eefb 0, #fff2fb 100%);
+      min-height: 100vh;
+      font-family: Segoe UI, Arial, sans-serif;
+      color: #2d2d2d;
+      margin: 0;
+    }
+    .portal-header {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .portal-header h1 {
+      color: #a020f0;
+      font-weight: 600;
+      margin-bottom: 2px;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .portal-header p {
+      color: #696969;
+      font-size: 1.1rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: #edeaea;
+      border-radius: 30px;
+      margin: 30px auto 0 auto;
+      width: 95%;
+      max-width: 680px;
+      padding: 6px;
+      box-shadow: 0 2px 12px #e8dddd5d;
+    }
+    .tab {
+      flex: 1 1 0;
+      padding: 16px 0;
+      background: none;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #343434;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.10s;
+    }
+    .tab.selected {
+      background: #fff;
+      color: #8d22d9;
+      box-shadow: 0 3px 10px #edeaea93;
+    }
+    .auth-card {
+      background: #fff;
+      margin: 32px auto 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #d0c7e233;
+      padding: 34px 28px 22px 28px;
+      width: 95%;
+      max-width: 400px;
+      transition: box-shadow 0.18s;
+    }
+    .form-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    label {
+      font-weight: 500;
+      font-size: 1.06rem;
+      margin-bottom: 2px;
+      display: block;
+    }
+    .login-input, .signup-input {
+      width: 90%;
+      margin: 9px 0 20px 0;
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: none;
+      background: #f5f5f5;
+      font-size: 1.07rem;
+      transition: box-shadow 0.2s;
+    }
+    .login-input:focus, .signup-input:focus {
+      box-shadow: 0 0 0 2px #d1b8f7;
+      outline: none;
+      background: #f1edfd;
+    }
+    .login-btn, .signup-btn {
+      width: 100%;
+      margin: 6px 0 10px 0;
+      padding: 15px;
+      background: #070317;
+      color: #fff;
+      font-size: 1.11rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.14s;
+    }
+    .login-btn:hover, .signup-btn:hover {
+      background: #5201a4;
+    }
+    .toggle-link, .login-text, .signup-text {
+      text-align: center;
+      color: #222;
+      font-size: 1.01rem;
+      margin-top: 8px;
+    }
+    .toggle-link a, .login-text a, .signup-text a {
+      text-decoration: underline;
+      color: #8d22d9;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none !important;
+    }
+    @media (max-width: 600px) {
+      .auth-card {
+        padding: 20px 8px;
+      }
+      .tabs {
+        flex-direction: column;
+      }
+      .tab {
+        padding: 10px 0;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal-header">
+    <h1>SafeGuard Portal</h1>
+    <p>YOUR PROTECTION IS OUR MISSION</p>
+  </div>
+  
+  <div class="tabs">
+    <button class="tab selected" id="tab-user" onclick="selectRole('user')">User</button>
+    <button class="tab" id="tab-volunteer" onclick="selectRole('volunteer')">Volunteer</button>
+    <button class="tab" id="tab-police" onclick="selectRole('police')">Police</button>
+  </div>
+
+  <div class="auth-card">
+    <!-- LOGIN FORM -->
+    <div id="loginView">
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div id="role-title" class="form-title">User Login</div>
+        <div id="field-label-1">
+          <label for="role-field-1">Watch ID</label>
+        </div>
+        <input id="role-field-1" class="login-input" type="text" placeholder="Enter your watch ID" required>
+        
+        <label for="role-password">Password</label>
+        <input id="role-password" class="login-input" type="password" placeholder="Enter your password" required>
+        
+        <button class="login-btn" type="submit">Login</button>
+      </form>
+      <div class="signup-text">
+        Don't have an account? <a onclick="showSignup()">Sign up</a>
+      </div>
+    </div>
+    <!-- SIGNUP FORM -->
+    <div id="signupView" class="hidden">
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <div id="signup-title" class="form-title">User Sign Up</div>
+        <label for="signup-username">Username</label>
+        <input id="signup-username" class="signup-input" type="text" required placeholder="Enter your username">
+        <label for="signup-phone">Phone Number</label>
+        <input id="signup-phone" class="signup-input" type="text" required placeholder="Enter your phone number">
+        <div id="signup-id-label">
+          <label for="signup-id-field">Watch ID</label>
+        </div>
+        <input id="signup-id-field" class="signup-input" type="text" required placeholder="Enter your watch ID">
+        <label for="signup-password">Password</label>
+        <input id="signup-password" class="signup-input" type="password" required placeholder="Enter password">
+        <label for="signup-verify-password">Verify Password</label>
+        <input id="signup-verify-password" class="signup-input" type="password" required placeholder="Re-enter password">
+        <button class="signup-btn" type="submit">Sign Up</button>
+      </form>
+      <div class="login-text">
+        Already have an account? <a onclick="showLogin()">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Role and label logic
+    const roles = {
+      user: {
+        label: "User Login",
+        signup: "User Sign Up",
+        idLabel: "Watch ID",
+        idPlaceholder: "Enter your watch ID",
+        loginField: { label: "Watch ID", placeholder: "Enter your watch ID" }
+      },
+      volunteer: {
+        label: "Volunteer Login",
+        signup: "Volunteer Sign Up",
+        idLabel: "Watch ID",
+        idPlaceholder: "Enter your watch ID",
+        loginField: { label: "Watch ID", placeholder: "Enter your watch ID" }
+      },
+      police: {
+        label: "Police Login",
+        signup: "Police Sign Up",
+        idLabel: "Police ID",
+        idPlaceholder: "Enter your Police ID",
+        loginField: { label: "Police ID", placeholder: "Enter your Police ID" }
+      }
+    };
+    let currentRole = 'user';
+    function selectRole(role) {
+      currentRole = role;
+      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('selected'));
+      document.getElementById('tab-' + role).classList.add('selected');
+      // LOGIN
+      document.getElementById('role-title').innerText = roles[role].label;
+      document.getElementById('field-label-1').innerHTML = `<label for="role-field-1">${roles[role].loginField.label}</label>`;
+      document.getElementById('role-field-1').placeholder = roles[role].loginField.placeholder;
+      // SIGNUP
+      document.getElementById('signup-title').innerText = roles[role].signup;
+      document.getElementById('signup-id-label').innerHTML = `<label for="signup-id-field">${roles[role].idLabel}</label>`;
+      document.getElementById('signup-id-field').placeholder = roles[role].idPlaceholder;
+    }
+    function showSignup() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('signupView').classList.remove('hidden');
+      selectRole(currentRole);
+    }
+    function showLogin() {
+      document.getElementById('signupView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+      selectRole(currentRole);
+    }
+
+    // LocalStorage DB helpers for demo
+    function getUserList() {
+      return JSON.parse(localStorage.getItem('users') || '[]');
+    }
+    function saveUserList(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+    function findUser(role, id) {
+      let users = getUserList();
+      return users.find(user => user.role === role && user.id === id);
+    }
+
+    // Login logic
+    function handleLogin(e) {
+      e.preventDefault();
+      let idVal = document.getElementById('role-field-1').value.trim();
+      let passVal = document.getElementById('role-password').value.trim();
+      let user = findUser(currentRole, idVal);
+      if (!user) {
+        alert("No account found! Please sign up first.");
+        showSignup();
+        document.getElementById('signup-id-field').value = idVal;
+        return false;
+      }
+      if (user.password === passVal) {
+        alert(`Welcome, ${user.username} (${user.id}) [${currentRole}]!\nLogin successful.`);
+        // Window.location or dashboard redirect can be added here
+        return true;
+      } else {
+        alert("Incorrect password.");
+        return false;
+      }
+    }
+
+    // Signup logic
+    function handleSignup(e) {
+      e.preventDefault();
+      let username = document.getElementById('signup-username').value.trim();
+      let phone = document.getElementById('signup-phone').value.trim();
+      let idField = document.getElementById('signup-id-field').value.trim();
+      let password = document.getElementById('signup-password').value;
+      let verifyPassword = document.getElementById('signup-verify-password').value;
+      if (password !== verifyPassword) {
+        alert("Passwords do not match!");
+        return false;
+      }
+      if (findUser(currentRole, idField)) {
+        alert("Account with this ID already exists. Please log in.");
+        showLogin();
+        document.getElementById('role-field-1').value = idField;
+        return false;
+      }
+      let users = getUserList();
+      users.push({
+        role: currentRole,
+        username: username,
+        phone: phone,
+        id: idField,
+        password: password
+      });
+      saveUserList(users);
+      alert(`Sign up successful for ${username} [${currentRole}]!\nYou may now sign in.`);
+      showLogin();
+      document.getElementById('role-field-1').value = idField;
+      return true;
+    }
+
+    window.onload = () => selectRole('user');
+  </script>
+</body>
+</html>
